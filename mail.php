@@ -1,62 +1,23 @@
 <?php
-/* Set e-mail recipient */
-$myemail = "abbylee94@outlook.com";
-
-/* Check all form inputs using check_input function */
-$name = check_input($_POST['name'], "Enter your name");
-$subject = check_input($_POST['subject'], "Enter a subject");
-$email = check_input($_POST['email']);
-$message = check_input($_POST['message'], "Write your message");
-
-/* If e-mail is not valid show error message */
-if (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/", $email))
-{
-show_error("E-mail address not valid");
-}
-/* Let's prepare the message for the e-mail */
-$message = "
-
-Name: $name
-E-mail: $email
-Subject: $subject
-
-Message:
-$message
-
-";
-
-/* Send the message using mail() function */
-mail($myemail, $subject, $message);
-
-/* Redirect visitor to the thank you page */
-header('Location: #thanks');
-exit();
-
-/* Functions we used */
-function check_input($data, $problem='')
-{
-$data = trim($data);
-$data = stripslashes($data);
-$data = htmlspecialchars($data);
-if ($problem && strlen($data) == 0)
-{
-show_error($problem);
-}
-return $data;
-}
-
-function show_error($myError)
-{
-?>
-    <html>
-
-    <body>
-        <p>Please correct the following error:</p> <strong><?php echo $myError; ?></strong>
-        <p>Hit the back button and try again</p>
-    </body>
-
-    </html>
-    <?php
-exit();
-}
+  // This check relies on there being an <input> with the name 'submit' in your form.
+  // i.e. <input type="submit" name="submit">Send Form</input>
+  if (isset($_POST['submit'])) {
+    $to = "abbylee94@outlook.com"; // Update with email.
+    $subject = "Application Submission";
+    
+    // Create new fields here for each field in your form.
+    // Ideally you would want some validation here too.
+    $field1 = $_POST['name'];
+    $field2 = $_POST['email'];
+    $field3 = $_POST['message'];
+    $field4 = $_POST['field4'];
+    $headers = "From: abbilee33.github.io\n";
+   
+    $message = "Field 1: $field1\nField 2: $field2\nField 3: $field3\nField 4: $field4\n";
+   
+    echo "Form Sent";
+    mail($to, $subject, $message, $headers);
+  } else {
+    echo "Form failed to send. Please contact me directly.";
+  }
 ?>
